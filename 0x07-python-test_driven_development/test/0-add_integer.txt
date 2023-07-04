@@ -1,4 +1,4 @@
- test to for adding two inteter
+A test for adding two integers
 
 Import Python module + collections
 >>> import sys
