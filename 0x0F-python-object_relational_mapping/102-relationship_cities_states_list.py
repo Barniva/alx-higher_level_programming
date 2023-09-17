@@ -1,24 +1,28 @@
 #!/usr/bin/python3
+
 """
-Write a script that lists all City objects from the database
+File: 102-relatinship_states_cities_list.py
+Desc: This module contains a python script that lists all City
+objects from the database hbtn_0e_101_usa
+
+Author: Gizachew Bayness (Elec Crazy)
+Date Created: Oct 8 2022
 """
 
-import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from relationship_state import Base, State
-from relationship_city import City
 from sys import argv
+from relationship_state import State
+from relationship_city import City
 
 
 if __name__ == "__main__":
-    eng = create_engine("mysql+mysqldb://{}:{}@localhost/{}".format(argv[1],
-                                                                    argv[2],
-                                                                    argv[3]))
-    Base.metadata.create_all(eng)
-    Session = sessionmaker(bind=eng)
+    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
+        argv[1], argv[2], argv[3]), pool_pre_ping=True)
+
+    Session = sessionmaker(bind=engine)
     session = Session()
-    list = session.query(City).all()
-    for city in list:
+
+    result = session.query(City).order_by(City.id)
+    for city in result:
         print("{}: {} -> {}".format(city.id, city.name, city.state.name))
-    session.close()
